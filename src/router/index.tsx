@@ -1,13 +1,15 @@
 import { createBrowserRouter } from "react-router";
 import { privateRoutes, publicRoutes } from "./routes";
 import { MainLayout } from "../layout/MainLayout";
+import Home from "../pages/Home";
+import TradePage from "../pages/Exchange";
 
 const router = createBrowserRouter([
   {
     element: <MainLayout />,
     children: [
-      { path: publicRoutes.home, element: <div>Home</div> },
-      { path: privateRoutes.trade, element: <div>Trade</div> },
+      { path: publicRoutes.home, element: <Home /> },
+      { path: privateRoutes.trade, element: <TradePage /> },
     ],
   },
 ]);
