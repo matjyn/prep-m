@@ -20,11 +20,11 @@ function Modal<T = unknown>({
 
   return createPortal(
     <div
-      className="modal-overlay"
+      className="modal-overlay animateIn"
       onClick={onClose}
     >
       <div
-        className="modal-content"
+        className="modal-content animateIn"
         onClick={(e) => e.stopPropagation()}
       >
         {children}

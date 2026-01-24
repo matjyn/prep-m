@@ -1,10 +1,8 @@
 import React, { useState, useMemo, useEffect } from "react";
-import { useUserStore } from "../../stores/user";
 import { useQueryAssets } from "../../queries/useQueryAssets";
 import InputWithDropdown from "./InputWithDropdown";
 
 const TradePage: React.FC = () => {
-  const user = useUserStore((s) => s.user);
   const { data: assets = [], isLoading } = useQueryAssets();
 
   const [isCryptoToFiat, setIsCryptoToFiat] = useState(true);
@@ -67,21 +65,25 @@ const TradePage: React.FC = () => {
     setIsCryptoToFiat((prev) => !prev);
   };
 
-  if (!user) {
-    return <div>Please log in to trade.</div>;
-  }
-
   return (
     <div
       style={{
-        maxWidth: 400,
+        width: 400,
         margin: "2rem auto",
         padding: 24,
         border: "1px solid #303030",
         borderRadius: "16px",
       }}
+      className="animateIn"
     >
-      <form>
+      <form
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          flexDirection: "column",
+          gap: 16,
+        }}
+      >
         <InputWithDropdown
           label={isCryptoToFiat ? "Crypto Amount" : "Fiat Amount (USD)"}
           amount={isCryptoToFiat ? cryptoAmount : fiatAmount}
@@ -95,7 +97,7 @@ const TradePage: React.FC = () => {
         <button
           type="button"
           onClick={handleSwap}
-          style={{ marginBottom: 16 }}
+          style={{ marginBottom: 16, alignSelf: "center" }}
         >
           Swap
         </button>
@@ -109,6 +111,7 @@ const TradePage: React.FC = () => {
             min="0"
             value={isCryptoToFiat ? fiatAmount : cryptoAmount}
             readOnly
+            style={{ height: 80 }}
           />
         </div>
       </form>

@@ -15,12 +15,12 @@ const Home: React.FC = () => {
   const { data, isLoading, isError, isFetching } = useQueryAssets(limit);
 
   return (
-    <div>
+    <div className="animateIn">
       <h1>Crypto Assets</h1>
       {isLoading ? (
-        <div>Loading...</div>
+        <div className="animateIn">Loading...</div>
       ) : isError ? (
-        <div>Error loading assets.</div>
+        <div className="animateIn">Error loading assets.</div>
       ) : (
         <>
           <Table>

@@ -3,6 +3,8 @@
   border-radius: 16px;
   border-collapse: collapse;
   font-family: inherit;
+  border: 1px solid #303030;
+  overflow: hidden;
 }
 
 .custom-table-row {

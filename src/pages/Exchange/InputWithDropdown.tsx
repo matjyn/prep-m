@@ -45,20 +45,27 @@ const InputWithDropdown: React.FC<InputWithDropdownProps> = ({
           onChange={onAmountChange ? (e) => onAmountChange(e.target.value) : undefined}
           disabled={isLoading || readOnly}
           readOnly={readOnly}
+          style={{ padding: 0, height: 80, width: "100%" }}
         />
-        <button
-          type="button"
+        <div
           style={{
             position: "absolute",
-            right: 8,
             top: "50%",
             transform: "translateY(-50%)",
+            right: 8,
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
           }}
-          onClick={() => setModalOpen(true)}
-          disabled={isLoading || readOnly || !setSelectedAssetId}
         >
-          {selectedAsset ? selectedAsset.name : "Select"}
-        </button>
+          <button
+            type="button"
+            onClick={() => setModalOpen(true)}
+            disabled={isLoading || readOnly || !setSelectedAssetId}
+          >
+            {selectedAsset ? selectedAsset.name : "Select"}
+          </button>
+        </div>
 
         <Modal
           isOpen={modalOpen}
@@ -73,7 +80,6 @@ const InputWithDropdown: React.FC<InputWithDropdownProps> = ({
                 margin: 0,
                 display: "flex",
                 flexDirection: "column",
-                gap: 8,
               }}
             >
               {assets.map((asset) => (
