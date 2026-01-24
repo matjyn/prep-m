@@ -1,9 +1,13 @@
-import React, { type HTMLAttributes } from "react";
+import React, { type HTMLAttributes, type TdHTMLAttributes, type ThHTMLAttributes } from "react";
 import "./table.styles.css";
 
-export const Table: React.FC<HTMLAttributes<HTMLTableElement>> = ({ children, ...props }) => (
+export const Table: React.FC<HTMLAttributes<HTMLTableElement>> = ({
+  children,
+  className = "",
+  ...props
+}) => (
   <table
-    className="custom-table"
+    className={`table ${className}`.trim()}
     {...props}
   >
     {children}
@@ -15,21 +19,26 @@ export const TableHeader: React.FC<HTMLAttributes<HTMLTableSectionElement>> = ({
   ...props
 }) => <thead {...props}>{children}</thead>;
 
-export const TableRow: React.FC<HTMLAttributes<HTMLTableRowElement>> = ({ children, ...props }) => (
+export const TableRow: React.FC<HTMLAttributes<HTMLTableRowElement>> = ({
+  children,
+  className = "",
+  ...props
+}) => (
   <tr
-    className="custom-table-row"
+    className={`table-row ${className}`.trim()}
     {...props}
   >
     {children}
   </tr>
 );
 
-export const TableHeaderCell: React.FC<HTMLAttributes<HTMLTableCellElement>> = ({
+export const TableHeaderCell: React.FC<ThHTMLAttributes<HTMLTableCellElement>> = ({
   children,
+  className = "",
   ...props
 }) => (
   <th
-    className="custom-table-header-cell"
+    className={`table-header-cell ${className}`.trim()}
     {...props}
   >
     {children}
@@ -41,12 +50,13 @@ export const TableBody: React.FC<HTMLAttributes<HTMLTableSectionElement>> = ({
   ...props
 }) => <tbody {...props}>{children}</tbody>;
 
-export const TableCell: React.FC<HTMLAttributes<HTMLTableCellElement>> = ({
+export const TableCell: React.FC<TdHTMLAttributes<HTMLTableCellElement>> = ({
   children,
+  className = "",
   ...props
 }) => (
   <td
-    className="custom-table-cell"
+    className={`table-cell ${className}`.trim()}
     {...props}
   >
     {children}

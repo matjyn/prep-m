@@ -1,0 +1,35 @@
+.input-with-select-modal {
+  position: relative;
+}
+
+.select-button-container {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  right: 8px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.item-list {
+  list-style: none;
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.item-list-item {
+  display: flex;
+  align-items: center;
+  padding: 12px 8px;
+  cursor: pointer;
+}
+
+.item-name {
+  font-weight: bold;
+}
+
+.item-price {
+  font-size: 0.9em;
+  color: #666;
+}

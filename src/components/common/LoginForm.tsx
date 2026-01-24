@@ -1,4 +1,6 @@
 import { useState } from "react";
+import Button from "../ui/Button/Button";
+import Input from "../ui/Input/Input";
 
 interface LoginFormData {
   email: string;
@@ -23,29 +25,27 @@ const LoginForm = ({ onSubmit }: { onSubmit: (data: LoginFormData) => void }) =>
 
   return (
     <form onSubmit={handleSubmit}>
-      <div>
-        <label htmlFor="email">Email</label>
-        <input
+      <div className="flex flex-column gap-3 mb-16">
+        <Input
           id="email"
           name="email"
           type="email"
+          placeholder="example@example.com"
           value={formData.email}
           onChange={handleChange}
         />
-      </div>
 
-      <div>
-        <label htmlFor="password">Password</label>
-        <input
+        <Input
           id="password"
           name="password"
           type="password"
+          placeholder="********"
           value={formData.password}
           onChange={handleChange}
         />
-      </div>
 
-      <button type="submit">Login</button>
+        <Button type="submit">Login</Button>
+      </div>
     </form>
   );
 };

@@ -13,10 +13,9 @@
 
 .modal-content {
   border: 1px solid #303030;
-  padding: 20px;
+  padding: 16px;
   border-radius: 12px;
-  width: 30%;
+  width: 25%;
   max-height: 70vh;
   background-color: #131313;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }

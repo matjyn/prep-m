@@ -1,0 +1,69 @@
+.button {
+  font-size: var(--font-size-base);
+  font-family: inherit;
+  cursor: pointer;
+  padding: 8px 16px;
+  border: 1px solid var(--color-border);
+  background-color: var(--color-primary);
+  color: var(--color-text-inverse);
+  border-radius: var(--radius-md);
+  font-weight: inherit;
+  transition:
+    background 200ms ease-in-out,
+    color 200ms ease-in-out;
+}
+
+.button:hover,
+.button:focus {
+  background-color: var(--color-primary-hover);
+}
+
+.button--secondary {
+  background-color: var(--color-secondary);
+  border-color: var(--color-secondary);
+}
+
+.button--secondary:hover,
+.button--secondary:focus {
+  background-color: #e56a4f;
+}
+
+.button--success {
+  background-color: var(--color-success);
+  border-color: var(--color-success);
+}
+
+.button--success:hover,
+.button--success:focus {
+  background-color: #4ac94d;
+}
+
+.button--error {
+  background-color: var(--color-error);
+  border-color: var(--color-error);
+}
+
+.button--error:hover,
+.button--error:focus {
+  background-color: #e03e3e;
+}
+
+.button--warning {
+  background-color: var(--color-warning);
+  border-color: var(--color-warning);
+}
+
+.button--warning:hover,
+.button--warning:focus {
+  background-color: #c08a1d;
+}
+
+.button--sm {
+  padding: 6px 12px;
+  font-size: 14px;
+}
+
+.button--lg {
+  padding: 12px 24px;
+  font-size: 18px;
+}

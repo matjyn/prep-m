@@ -1,6 +1,8 @@
 import React, { useState, useMemo, useEffect } from "react";
 import { useQueryAssets } from "../../queries/useQueryAssets";
-import InputWithDropdown from "./InputWithDropdown";
+import Button from "../../components/ui/Button/Button";
+import Input from "../../components/ui/Input/Input";
+import InputWithSelectModal from "../../components/common/InputWithSelectModal/InputWithSelectModal";
 
 const TradePage: React.FC = () => {
   const { data: assets = [], isLoading } = useQueryAssets();
@@ -66,52 +68,33 @@ const TradePage: React.FC = () => {
   };
 
   return (
-    <div
-      style={{
-        width: 400,
-        margin: "2rem auto",
-        padding: 24,
-        border: "1px solid #303030",
-        borderRadius: "16px",
-      }}
-      className="animateIn"
-    >
-      <form
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          flexDirection: "column",
-          gap: 16,
-        }}
-      >
-        <InputWithDropdown
+    <div className="animateIn">
+      <form className="flex flex-column gap-3">
+        <InputWithSelectModal
           label={isCryptoToFiat ? "Crypto Amount" : "Fiat Amount (USD)"}
-          amount={isCryptoToFiat ? cryptoAmount : fiatAmount}
-          onAmountChange={isCryptoToFiat ? handleCryptoChange : handleFiatChange}
-          assets={assets}
-          selectedAsset={selectedAsset}
-          setSelectedAssetId={setSelectedAssetId}
+          value={isCryptoToFiat ? cryptoAmount : fiatAmount}
+          onValueChange={isCryptoToFiat ? handleCryptoChange : handleFiatChange}
+          items={assets}
+          selectedItem={selectedAsset}
+          onItemSelect={setSelectedAssetId}
           isLoading={isLoading}
         />
 
-        <button
+        <Button
           type="button"
           onClick={handleSwap}
-          style={{ marginBottom: 16, alignSelf: "center" }}
         >
-          Swap
-        </button>
+          ⇅
+        </Button>
 
-        <div style={{ marginBottom: 0 }}>
-          <label style={{ display: "block", marginBottom: 4 }}>
-            {isCryptoToFiat ? "Fiat Amount (USD)" : "Crypto Amount"}
-          </label>
-          <input
+        <div>
+          <Input
             type="number"
+            placeholder={isCryptoToFiat ? "Fiat Amount (USD)" : "Crypto Amount"}
             min="0"
             value={isCryptoToFiat ? fiatAmount : cryptoAmount}
-            readOnly
-            style={{ height: 80 }}
+            disabled={true}
+            className="cursor-not-allowed"
           />
         </div>
       </form>

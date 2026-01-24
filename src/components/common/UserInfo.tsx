@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useUserStore } from "../../stores/user";
 import { Modal } from "../ui/Modal/Modal";
 import LoginForm from "./LoginForm";
+import Button from "../ui/Button/Button";
 
 const UserInfo = () => {
   const user = useUserStore((state) => state.user);
@@ -19,7 +20,7 @@ const UserInfo = () => {
 
   return (
     <>
-      <div>{user ? user.email : <button onClick={showLoginModal}>Login</button>}</div>
+      <div>{user ? user.email : <Button onClick={showLoginModal}>Login</Button>}</div>
 
       <Modal
         isOpen={isOpen}
