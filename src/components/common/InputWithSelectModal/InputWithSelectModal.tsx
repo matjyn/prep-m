@@ -82,12 +82,7 @@ const InputWithSelectModal = <T extends SelectableItem>({
               <div>
                 <div className="item-name font-bold">{item.name}</div>
                 <div className="item-price text-sm text-muted">
-                  {item.price
-                    ? item.price.toLocaleString(undefined, {
-                        style: "currency",
-                        currency: "USD",
-                      })
-                    : "Price not available"}
+                  {item.price ? "$" + item.price.toFixed(2) : "Price not available"}
                 </div>
               </div>
             </li>

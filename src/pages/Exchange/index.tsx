@@ -3,6 +3,7 @@ import { useQueryAssets } from "../../queries/useQueryAssets";
 import Button from "../../components/ui/Button/Button";
 import Input from "../../components/ui/Input/Input";
 import InputWithSelectModal from "../../components/common/InputWithSelectModal/InputWithSelectModal";
+import "./ExchangePage.styles.css";
 
 const TradePage: React.FC = () => {
   const { data: assets = [], isLoading } = useQueryAssets();
@@ -68,8 +69,8 @@ const TradePage: React.FC = () => {
   };
 
   return (
-    <div className="animateIn">
-      <form className="flex flex-column gap-3">
+    <div className="animateIn exchange-page-container">
+      <form className="flex flex-column gap-3 w-full">
         <InputWithSelectModal
           label={isCryptoToFiat ? "Crypto Amount" : "Fiat Amount (USD)"}
           value={isCryptoToFiat ? cryptoAmount : fiatAmount}
@@ -92,7 +93,11 @@ const TradePage: React.FC = () => {
             type="number"
             placeholder={isCryptoToFiat ? "Fiat Amount (USD)" : "Crypto Amount"}
             min="0"
-            value={isCryptoToFiat ? fiatAmount : cryptoAmount}
+            value={
+              isCryptoToFiat
+                ? (parseFloat(fiatAmount) || 0).toFixed(2)
+                : (parseFloat(cryptoAmount) || 0).toFixed(2)
+            }
             disabled={true}
             className="cursor-not-allowed"
           />
