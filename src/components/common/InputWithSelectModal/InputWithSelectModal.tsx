@@ -20,6 +20,7 @@ interface InputWithSelectModalProps<T extends SelectableItem> {
   onItemSelect?: (id: string) => void;
   isLoading: boolean;
   readOnly?: boolean;
+  isInputDisabled?: boolean;
 }
 
 const InputWithSelectModal = <T extends SelectableItem>({
@@ -31,6 +32,7 @@ const InputWithSelectModal = <T extends SelectableItem>({
   onItemSelect,
   isLoading,
   readOnly = false,
+  isInputDisabled = false,
 }: InputWithSelectModalProps<T>) => {
   const [modalOpen, setModalOpen] = useState(false);
 
@@ -40,14 +42,14 @@ const InputWithSelectModal = <T extends SelectableItem>({
   };
 
   return (
-    <div className="input-with-select-modal">
+    <div className="input-with-select-modal animateIn">
       <Input
         type="number"
         min="0"
         placeholder={label}
         value={value}
         onChange={onValueChange ? (e) => onValueChange(e.target.value) : undefined}
-        disabled={isLoading || readOnly}
+        disabled={isLoading || readOnly || isInputDisabled}
         readOnly={readOnly}
       />
       <div className="select-button-container">
@@ -63,6 +65,7 @@ const InputWithSelectModal = <T extends SelectableItem>({
       <Modal
         isOpen={modalOpen}
         onClose={() => setModalOpen(false)}
+        className="w-full"
       >
         <h3 className="mt-0">Select Item</h3>
         <ul className="item-list m-0 p-0">

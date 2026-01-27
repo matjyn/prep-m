@@ -25,6 +25,7 @@ const UserInfo = () => {
       <Modal
         isOpen={isOpen}
         onClose={showLoginModal}
+        className="w-full"
       >
         <LoginForm onSubmit={handleLoginSubmit} />
       </Modal>

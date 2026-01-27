@@ -595,6 +595,10 @@ a {
   animation: contentIn 200ms ease-out;
 }
 
+.animateOut {
+  animation: contentOut 200ms ease-out;
+}
+
 @keyframes contentIn {
   from {
     opacity: 0;

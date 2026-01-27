@@ -2,7 +2,7 @@ import { createBrowserRouter } from "react-router";
 import { privateRoutes, publicRoutes } from "./routes";
 import { MainLayout } from "../layout/MainLayout";
 import Home from "../pages/Home";
-import TradePage from "../pages/Exchange";
+import TradePage from "../pages/Trade";
 
 const router = createBrowserRouter([
   {

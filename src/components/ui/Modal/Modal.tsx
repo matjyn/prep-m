@@ -8,6 +8,7 @@ interface ModalProps<T = unknown> {
   children: React.ReactNode;
   data?: T;
   container?: Element | null;
+  className?: string;
 }
 
 function Modal<T = unknown>({
@@ -15,16 +16,17 @@ function Modal<T = unknown>({
   onClose,
   children,
   container = document.body,
+  className = "",
 }: ModalProps<T>) {
   if (!isOpen || !container) return null;
 
   return createPortal(
     <div
-      className="modal-overlay animateIn"
+      className={`modal-overlay animateIn`}
       onClick={onClose}
     >
       <div
-        className="modal-content animateIn"
+        className={`modal-content animateIn ${className}`}
         onClick={(e) => e.stopPropagation()}
       >
         {children}

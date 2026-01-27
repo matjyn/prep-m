@@ -5,10 +5,16 @@
   font-family: inherit;
   padding: 16px;
   border: 2px solid var(--color-border);
-  background-color: var(--color-background);
+  background-color: var(--color-bg-input);
   color: var(--color-text);
   border-radius: var(--radius-md);
   transition: border-color 200ms ease-in-out;
+}
+
+.input:disabled {
+  background-color: var(--color-bg-secondary);
+  color: var(--color-text-muted);
+  cursor: not-allowed;
 }
 
 .input:focus {
@@ -59,4 +65,15 @@
 .input--lg {
   padding: 12px 24px;
   font-size: 18px;
+}
+
+.input[type="number"] {
+  -webkit-appearance: none;
+  -moz-appearance: textfield;
+}
+
+.input[type="number"]::-webkit-outer-spin-button,
+.input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }
