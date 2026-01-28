@@ -6,8 +6,9 @@
   --font-weight-base: 600;
 
   --color-bg: #0d1117;
+  --color-bg-secondary: #06101f;
   --color-bg-input: #161b22;
-  --color-bg-secondary: #21262d;
+  --color-bg-input-disabled: #23272e;
   --color-text: #c9d1d9;
   --color-text-inverse: #ffffff;
   --color-text-muted: #8b949e;

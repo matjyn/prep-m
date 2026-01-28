@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useRef } from "react";
 import {
   Table,
   TableHeader,
@@ -11,11 +11,16 @@ import { useQueryAssets } from "../../queries/useQueryAssets";
 import type { Asset } from "../../types/api/assets";
 import { formatPrice } from "../../utils/format";
 import { Modal } from "../../components/ui/Modal/Modal";
+import { Dropdown } from "../../components/ui/Dropdown/Dropdown";
+import Button from "../../components/ui/Button/Button";
 
 const Home: React.FC = () => {
   const [limit, setLimit] = useState(10);
   const [sortBy, setSortBy] = useState<string | null>(null);
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
+  const [openDropdownId, setOpenDropdownId] = useState<string | null>(null);
+  const dropdownRefs = useRef<{ [key: string]: HTMLButtonElement | null }>({});
+
   const { data, isError, isFetching } = useQueryAssets(
     limit,
     0,
@@ -51,6 +56,14 @@ const Home: React.FC = () => {
       setSortBy(field);
       setSortOrder("asc");
     }
+  };
+
+  const handleDropdownToggle = (assetId: string) => {
+    setOpenDropdownId(openDropdownId === assetId ? null : assetId);
+  };
+
+  const closeDropdown = () => {
+    setOpenDropdownId(null);
   };
 
   return (
@@ -102,7 +115,38 @@ const Home: React.FC = () => {
                       <span>No icon</span>
                     )}
                   </TableCell>
-                  <TableCell className="text-right">▼</TableCell>
+                  <TableCell className="text-right">
+                    <Button
+                      ref={(el) => {
+                        if (el) dropdownRefs.current[asset.id] = el;
+                      }}
+                      onClick={() => handleDropdownToggle(asset.id)}
+                    >
+                      ⋮
+                    </Button>
+                    {dropdownRefs.current[asset.id] && (
+                      <Dropdown
+                        anchorRef={{
+                          current: dropdownRefs.current[asset.id] as HTMLElement,
+                        }}
+                        isOpen={openDropdownId === asset.id}
+                        onClose={closeDropdown}
+                      >
+                        <div
+                          className="w-full px-4 py-2 cursor-pointer"
+                          onClick={closeDropdown}
+                        >
+                          Buy
+                        </div>
+                        <div
+                          className="w-full px-4 py-2 cursor-pointer"
+                          onClick={() => setOpenDropdownId(null)}
+                        >
+                          Sell
+                        </div>
+                      </Dropdown>
+                    )}
+                  </TableCell>
                 </TableRow>
               ))}
               {sortedData && sortedData.length > 0 && (

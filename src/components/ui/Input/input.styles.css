@@ -12,7 +12,7 @@
 }
 
 .input:disabled {
-  background-color: var(--color-bg-secondary);
+  background-color: var(--color-bg-input-disabled);
   color: var(--color-text-muted);
   cursor: not-allowed;
 }

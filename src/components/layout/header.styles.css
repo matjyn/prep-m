@@ -2,5 +2,5 @@
   position: sticky;
   top: 1rem;
   z-index: 1000;
-  background-color: var(--color-bg);
+  background-color: var(--color-bg-secondary);
 }

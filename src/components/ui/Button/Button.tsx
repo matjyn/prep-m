@@ -1,4 +1,4 @@
-import React from "react";
+import React, { forwardRef } from "react";
 import "./button.styles.css";
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
@@ -6,20 +6,20 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   size?: "sm" | "md" | "lg";
 }
 
-const Button: React.FC<ButtonProps> = ({
-  variant = "primary",
-  size = "md",
-  className = "",
-  ...props
-}) => {
-  const classes = `button button--${variant} button--${size} ${className}`.trim();
+const Button = forwardRef<HTMLButtonElement, ButtonProps>(
+  ({ variant = "primary", size = "md", className = "", ...props }, ref) => {
+    const classes = `button button--${variant} button--${size} ${className}`.trim();
 
-  return (
-    <button
-      className={classes}
-      {...props}
-    />
-  );
-};
+    return (
+      <button
+        ref={ref}
+        className={classes}
+        {...props}
+      />
+    );
+  },
+);
+
+Button.displayName = "Button";
 
 export default Button;

@@ -1,7 +1,7 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import Input from "../../ui/Input/Input";
 import Button from "../../ui/Button/Button";
-import { Modal } from "../../ui/Modal/Modal";
+import { Dropdown } from "../../ui/Dropdown/Dropdown";
 import "./InputWithSelectModal.styles.css";
 
 interface SelectableItem {
@@ -34,11 +34,12 @@ const InputWithSelectModal = <T extends SelectableItem>({
   readOnly = false,
   isInputDisabled = false,
 }: InputWithSelectModalProps<T>) => {
-  const [modalOpen, setModalOpen] = useState(false);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const buttonRef = useRef<HTMLButtonElement>(null!);
 
   const handleItemSelect = (id: string) => {
     if (onItemSelect) onItemSelect(id);
-    setModalOpen(false);
+    setDropdownOpen(false);
   };
 
   return (
@@ -54,25 +55,25 @@ const InputWithSelectModal = <T extends SelectableItem>({
       />
       <div className="select-button-container">
         <Button
+          ref={buttonRef}
           type="button"
-          onClick={() => setModalOpen(true)}
+          onClick={() => setDropdownOpen(!dropdownOpen)}
           disabled={isLoading || readOnly || !onItemSelect}
         >
           {selectedItem ? selectedItem.name : "Select"}
         </Button>
       </div>
 
-      <Modal
-        isOpen={modalOpen}
-        onClose={() => setModalOpen(false)}
-        className="w-full"
+      <Dropdown
+        anchorRef={buttonRef}
+        isOpen={dropdownOpen}
+        onClose={() => setDropdownOpen(false)}
       >
-        <h3 className="mt-0">Select Item</h3>
-        <ul className="item-list m-0 p-0">
+        <ul className="item-list m-0 p-2 bg-white border rounded shadow-lg">
           {items.map((item) => (
             <li
               key={item.id}
-              className="item-list-item flex align-center p-2 cursor-pointer"
+              className="item-list-item flex align-center p-2 cursor-pointer hover:bg-gray-100"
               onClick={() => handleItemSelect(item.id)}
             >
               {item.iconUrl && (
@@ -91,7 +92,7 @@ const InputWithSelectModal = <T extends SelectableItem>({
             </li>
           ))}
         </ul>
-      </Modal>
+      </Dropdown>
     </div>
   );
 };
