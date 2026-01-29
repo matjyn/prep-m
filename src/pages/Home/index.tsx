@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useRef } from "react";
+import React, { useState, useRef, useMemo } from "react";
 import {
   Table,
   TableHeader,
@@ -6,43 +6,43 @@ import {
   TableHeaderCell,
   TableBody,
   TableCell,
+  SortableTableHeaderCell,
 } from "../../components/ui/Table/Table";
 import { useQueryAssets } from "../../queries/useQueryAssets";
 import type { Asset } from "../../types/api/assets";
 import { formatPrice } from "../../utils/format";
 import { Modal } from "../../components/ui/Modal/Modal";
-import { Dropdown } from "../../components/ui/Dropdown/Dropdown";
-import Button from "../../components/ui/Button/Button";
+import { Button } from "../../components/ui/Button/Button";
+import { AssetDropdown } from "./AssetDropdown";
 
 const Home: React.FC = () => {
-  const [limit, setLimit] = useState(10);
+  const [limit] = useState(10);
   const [sortBy, setSortBy] = useState<string | null>(null);
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
   const [openDropdownId, setOpenDropdownId] = useState<string | null>(null);
   const dropdownRefs = useRef<{ [key: string]: HTMLButtonElement | null }>({});
 
-  const { data, isError, isFetching } = useQueryAssets(
-    limit,
-    0,
-    sortBy === "name" ? sortBy : undefined,
-    sortOrder,
-  );
+  const { data, isError, isPending, isFetchingNextPage, fetchNextPage, hasNextPage } =
+    useQueryAssets({
+      limit,
+      sortBy: sortBy === "current_price" ? null : sortBy,
+      sortOrder: sortBy === "current_price" ? "asc" : sortOrder,
+    });
 
-  const sortedData = useMemo(() => {
-    if (!data) return data;
-    if (sortBy === "price") {
-      return [...data].sort((a, b) => {
-        const aPrice = a.price;
-        const bPrice = b.price;
+  const allAssets = data?.pages.flat() || [];
+
+  const sortedAssets = useMemo(() => {
+    if (sortBy === "current_price") {
+      return [...allAssets].sort((a, b) => {
         if (sortOrder === "asc") {
-          return aPrice - bPrice;
+          return a.current_price - b.current_price;
         } else {
-          return bPrice - aPrice;
+          return b.current_price - a.current_price;
         }
       });
     }
-    return data;
-  }, [data, sortBy, sortOrder]);
+    return allAssets;
+  }, [allAssets, sortBy, sortOrder]);
 
   const handleSort = (field: string) => {
     if (sortBy === field) {
@@ -69,13 +69,15 @@ const Home: React.FC = () => {
   return (
     <div className="animateIn">
       <Modal
-        isOpen={isFetching}
+        isOpen={isPending}
         onClose={() => {}}
         className="w-auto"
       >
         Loading...
       </Modal>
+
       <h1>Crypto Assets</h1>
+
       {isError ? (
         <div className="animateIn">Error loading assets.</div>
       ) : (
@@ -83,31 +85,35 @@ const Home: React.FC = () => {
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHeaderCell
-                  onClick={() => handleSort("name")}
-                  className="cursor-pointer"
+                <SortableTableHeaderCell
+                  field="name"
+                  sortBy={sortBy}
+                  sortOrder={sortOrder}
+                  onSort={handleSort}
                 >
-                  Name {sortBy === "name" ? (sortOrder === "asc" ? "↓" : "↑") : ""}
-                </TableHeaderCell>
-                <TableHeaderCell
-                  onClick={() => handleSort("price")}
-                  className="cursor-pointer"
+                  Name
+                </SortableTableHeaderCell>
+                <SortableTableHeaderCell
+                  field="current_price"
+                  sortBy={sortBy}
+                  sortOrder={sortOrder}
+                  onSort={handleSort}
                 >
-                  Price (USD) {sortBy === "price" ? (sortOrder === "asc" ? "↓" : "↑") : ""}
-                </TableHeaderCell>
+                  Price (USD)
+                </SortableTableHeaderCell>
                 <TableHeaderCell>Icon</TableHeaderCell>
                 <TableHeaderCell></TableHeaderCell>
               </TableRow>
             </TableHeader>
             <TableBody>
-              {sortedData?.map((asset: Asset) => (
+              {sortedAssets?.map((asset: Asset) => (
                 <TableRow key={asset.id}>
                   <TableCell>{asset.name}</TableCell>
-                  <TableCell>{formatPrice(asset.price)}</TableCell>
+                  <TableCell>{formatPrice(asset.current_price)}</TableCell>
                   <TableCell>
-                    {asset.iconUrl ? (
+                    {asset.image ? (
                       <img
-                        src={asset.iconUrl}
+                        src={asset.image}
                         alt={asset.name}
                         className="w-4 h-4"
                       />
@@ -124,39 +130,22 @@ const Home: React.FC = () => {
                     >
                       ⋮
                     </Button>
-                    {dropdownRefs.current[asset.id] && (
-                      <Dropdown
-                        anchorRef={{
-                          current: dropdownRefs.current[asset.id] as HTMLElement,
-                        }}
-                        isOpen={openDropdownId === asset.id}
-                        onClose={closeDropdown}
-                      >
-                        <div
-                          className="w-full px-4 py-2 cursor-pointer"
-                          onClick={closeDropdown}
-                        >
-                          Buy
-                        </div>
-                        <div
-                          className="w-full px-4 py-2 cursor-pointer"
-                          onClick={() => setOpenDropdownId(null)}
-                        >
-                          Sell
-                        </div>
-                      </Dropdown>
-                    )}
+                    <AssetDropdown
+                      isOpen={openDropdownId === asset.id}
+                      onClose={closeDropdown}
+                      anchorRef={{ current: dropdownRefs.current[asset.id] as HTMLElement }}
+                    />
                   </TableCell>
                 </TableRow>
               ))}
-              {sortedData && sortedData.length > 0 && (
+              {hasNextPage && (
                 <TableRow>
                   <TableCell
                     colSpan={4}
                     className="text-center cursor-pointer"
-                    onClick={() => !isFetching && setLimit((l) => l + 10)}
+                    onClick={() => fetchNextPage()}
                   >
-                    {isFetching ? "Loading..." : "Show more"}
+                    {isFetchingNextPage ? "Loading..." : "Show more"}
                   </TableCell>
                 </TableRow>
               )}
@@ -168,4 +157,4 @@ const Home: React.FC = () => {
   );
 };
 
-export default Home;
+export { Home };

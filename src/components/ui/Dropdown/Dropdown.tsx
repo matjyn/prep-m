@@ -9,7 +9,7 @@ interface DropdownProps {
   onClose: () => void;
 }
 
-export const Dropdown: React.FC<DropdownProps> = ({ anchorRef, children, isOpen, onClose }) => {
+const Dropdown: React.FC<DropdownProps> = ({ anchorRef, children, isOpen, onClose }) => {
   const [position, setPosition] = useState({ top: 0, left: 0 });
   const dropdownRef = useRef<HTMLDivElement>(null);
 
@@ -75,3 +75,5 @@ export const Dropdown: React.FC<DropdownProps> = ({ anchorRef, children, isOpen,
     document.body,
   );
 };
+
+export { Dropdown };

@@ -7,3 +7,27 @@
   align-items: center;
   justify-content: center;
 }
+
+.item-list {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.item-list-item {
+  display: flex;
+  align-items: center;
+  padding: 16px;
+  cursor: pointer;
+}
+
+.item-name {
+  font-weight: bold;
+}
+
+.item-price {
+  font-size: 0.9em;
+  color: #666;
+}

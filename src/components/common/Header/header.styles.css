@@ -4,3 +4,7 @@
   z-index: 1000;
   background-color: var(--color-bg-secondary);
 }
+
+.header a.active {
+  color: var(--color-primary);
+}

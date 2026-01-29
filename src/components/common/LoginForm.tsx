@@ -1,6 +1,6 @@
 import { useState } from "react";
-import Button from "../ui/Button/Button";
-import Input from "../ui/Input/Input";
+import { Button } from "../ui/Button/Button";
+import { Input } from "../ui/Input/Input";
 
 interface LoginFormData {
   email: string;
@@ -50,4 +50,4 @@ const LoginForm = ({ onSubmit }: { onSubmit: (data: LoginFormData) => void }) =>
   );
 };
 
-export default LoginForm;
+export { LoginForm };

@@ -62,3 +62,5 @@ export const TableCell: React.FC<TdHTMLAttributes<HTMLTableCellElement>> = ({
     {children}
   </td>
 );
+
+export { SortableTableHeaderCell } from "./SortableTableHeaderCell";

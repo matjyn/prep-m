@@ -1,12 +1,13 @@
 import { useState } from "react";
 import { useUserStore } from "../../stores/user";
 import { Modal } from "../ui/Modal/Modal";
-import LoginForm from "./LoginForm";
-import Button from "../ui/Button/Button";
+import { LoginForm } from "./LoginForm";
+import { Button } from "../ui/Button/Button";
 
 const UserInfo = () => {
   const user = useUserStore((state) => state.user);
   const setUser = useUserStore((state) => state.setUser);
+  const clearUser = useUserStore((state) => state.clearUser);
   const [isOpen, setIsOpen] = useState(false);
 
   const showLoginModal = () => {
@@ -18,9 +19,21 @@ const UserInfo = () => {
     setIsOpen(false);
   };
 
+  const handleLogout = () => {
+    clearUser();
+  };
+
   return (
     <>
-      <div>{user ? user.email : <Button onClick={showLoginModal}>Login</Button>}</div>
+      <div>
+        {user ? (
+          <div className="flex items-center gap-2">
+            <Button onClick={handleLogout}>Logout</Button>
+          </div>
+        ) : (
+          <Button onClick={showLoginModal}>Login</Button>
+        )}
+      </div>
 
       <Modal
         isOpen={isOpen}

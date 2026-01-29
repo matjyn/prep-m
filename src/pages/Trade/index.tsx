@@ -1,12 +1,15 @@
 import React, { useState, useMemo, useEffect } from "react";
 import { useQueryAssets } from "../../queries/useQueryAssets";
-import Button from "../../components/ui/Button/Button";
-import Input from "../../components/ui/Input/Input";
-import InputWithSelectModal from "../../components/common/InputWithSelectModal/InputWithSelectModal";
+import { Button } from "../../components/ui/Button/Button";
+import { Input } from "../../components/ui/Input/Input";
+import { InputWithSelectModal } from "../../components/common/InputWithSelectModal/InputWithSelectModal";
+import { AssetsList } from "./AssetsList";
 import "./TradePage.styles.css";
 
 const TradePage: React.FC = () => {
-  const { data: assets = [], isLoading } = useQueryAssets();
+  const { data, isPending } = useQueryAssets();
+
+  const assets = data?.pages.flat() || [];
 
   const [isCryptoToFiat, setIsCryptoToFiat] = useState(true);
   const [cryptoAmount, setCryptoAmount] = useState("");
@@ -29,20 +32,16 @@ const TradePage: React.FC = () => {
       if (!cryptoAmount) return setFiatAmount("");
       const parsed = parseFloat(cryptoAmount);
       if (Number.isNaN(parsed)) return setFiatAmount("");
-      setFiatAmount((parsed * selectedAsset.price).toString());
+      setFiatAmount((parsed * selectedAsset.current_price).toString());
     }
-  }, [cryptoAmount, selectedAsset, isCryptoToFiat]);
-
-  useEffect(() => {
-    if (!selectedAsset) return;
 
     if (!isCryptoToFiat) {
       if (!fiatAmount) return setCryptoAmount("");
       const parsed = parseFloat(fiatAmount);
-      if (Number.isNaN(parsed) || selectedAsset.price === 0) return setCryptoAmount("");
-      setCryptoAmount((parsed / selectedAsset.price).toString());
+      if (Number.isNaN(parsed) || selectedAsset.current_price === 0) return setCryptoAmount("");
+      setCryptoAmount((parsed / selectedAsset.current_price).toString());
     }
-  }, [fiatAmount, selectedAsset, isCryptoToFiat]);
+  }, [cryptoAmount, fiatAmount, selectedAsset, isCryptoToFiat]);
 
   return (
     <div className="animateIn exchange-page-container">
@@ -52,10 +51,14 @@ const TradePage: React.FC = () => {
             label="Crypto Amount"
             value={cryptoAmount}
             onValueChange={handleCryptoChange}
-            items={assets}
-            selectedItem={selectedAsset}
-            onItemSelect={setSelectedAssetId}
-            isLoading={isLoading}
+            children={
+              <AssetsList
+                assets={assets}
+                onClick={setSelectedAssetId}
+              />
+            }
+            selectedItemName={selectedAsset?.name}
+            isLoading={isPending}
             isInputDisabled={false}
           />
         ) : (
@@ -94,10 +97,14 @@ const TradePage: React.FC = () => {
             label="Crypto Amount"
             value={(parseFloat(cryptoAmount) || 0).toFixed(2)}
             onValueChange={undefined}
-            items={assets}
-            selectedItem={selectedAsset}
-            onItemSelect={setSelectedAssetId}
-            isLoading={isLoading}
+            children={
+              <AssetsList
+                assets={assets}
+                onClick={setSelectedAssetId}
+              />
+            }
+            selectedItemName={selectedAsset.name}
+            isLoading={isPending}
             isInputDisabled={true}
           />
         )}
@@ -106,4 +113,4 @@ const TradePage: React.FC = () => {
   );
 };
 
-export default TradePage;
+export { TradePage };

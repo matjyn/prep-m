@@ -11,25 +11,3 @@
   justify-content: center;
   align-items: center;
 }
-
-.item-list {
-  list-style: none;
-  max-height: 400px;
-  overflow-y: auto;
-}
-
-.item-list-item {
-  display: flex;
-  align-items: center;
-  padding: 12px 8px;
-  cursor: pointer;
-}
-
-.item-name {
-  font-weight: bold;
-}
-
-.item-price {
-  font-size: 0.9em;
-  color: #666;
-}
