@@ -43,71 +43,71 @@ const TradePage: React.FC = () => {
     }
   }, [cryptoAmount, fiatAmount, selectedAsset, isCryptoToFiat]);
 
+  const firstInput = isCryptoToFiat ? (
+    <InputWithSelectModal
+      label="Crypto Amount"
+      value={cryptoAmount}
+      onValueChange={handleCryptoChange}
+      children={
+        <AssetsList
+          assets={assets}
+          onClick={setSelectedAssetId}
+        />
+      }
+      selectedItemName={selectedAsset?.name}
+      isLoading={isPending}
+      isInputDisabled={false}
+    />
+  ) : (
+    <Input
+      type="number"
+      placeholder="Fiat Amount (USD)"
+      min="0"
+      value={fiatAmount}
+      onChange={(e) => handleFiatChange(e.target.value)}
+      disabled={false}
+      className="animateIn"
+    />
+  );
+
+  const secondInput = isCryptoToFiat ? (
+    <Input
+      type="number"
+      placeholder="Fiat Amount (USD)"
+      min="0"
+      value={(parseFloat(fiatAmount) || 0).toFixed(2)}
+      onChange={undefined}
+      disabled={true}
+      className="animateIn"
+    />
+  ) : (
+    <InputWithSelectModal
+      label="Crypto Amount"
+      value={(parseFloat(cryptoAmount) || 0).toFixed(2)}
+      onValueChange={undefined}
+      children={
+        <AssetsList
+          assets={assets}
+          onClick={setSelectedAssetId}
+        />
+      }
+      selectedItemName={selectedAsset?.name}
+      isLoading={isPending}
+      isInputDisabled={true}
+    />
+  );
+
   return (
     <div className="animateIn exchange-page-container">
       <form className="flex flex-column gap-3 w-full">
-        {isCryptoToFiat ? (
-          <InputWithSelectModal
-            label="Crypto Amount"
-            value={cryptoAmount}
-            onValueChange={handleCryptoChange}
-            children={
-              <AssetsList
-                assets={assets}
-                onClick={setSelectedAssetId}
-              />
-            }
-            selectedItemName={selectedAsset?.name}
-            isLoading={isPending}
-            isInputDisabled={false}
-          />
-        ) : (
-          <Input
-            type="number"
-            placeholder="Fiat Amount (USD)"
-            min="0"
-            value={fiatAmount}
-            onChange={(e) => handleFiatChange(e.target.value)}
-            disabled={false}
-            className="animateIn"
-          />
-        )}
-
+        {firstInput}
         <Button
           type="button"
           onClick={handleSwap}
         >
           ⇅
         </Button>
-
-        {isCryptoToFiat ? (
-          <div>
-            <Input
-              type="number"
-              placeholder="Fiat Amount (USD)"
-              min="0"
-              value={(parseFloat(fiatAmount) || 0).toFixed(2)}
-              onChange={undefined}
-              disabled={true}
-              className=" animateIn"
-            />
-          </div>
-        ) : (
-          <InputWithSelectModal
-            label="Crypto Amount"
-            value={(parseFloat(cryptoAmount) || 0).toFixed(2)}
-            onValueChange={undefined}
-            children={
-              <AssetsList
-                assets={assets}
-                onClick={setSelectedAssetId}
-              />
-            }
-            selectedItemName={selectedAsset.name}
-            isLoading={isPending}
-            isInputDisabled={true}
-          />
-        )}
+        {secondInput}
       </form>
     </div>
   );

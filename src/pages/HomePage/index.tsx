@@ -25,23 +25,30 @@ const HomePage: React.FC = () => {
   const { data, isError, isPending, isFetchingNextPage, fetchNextPage, hasNextPage } =
     useQueryAssets({
       limit,
-      sortBy: sortBy === "current_price" ? null : sortBy,
-      sortOrder: sortBy === "current_price" ? undefined : sortOrder,
     });
 
   const allAssets = data?.pages.flat() || [];
 
   const sortedAssets = useMemo(() => {
+    let sorted = [...allAssets];
     if (sortBy === "current_price") {
-      return [...allAssets].sort((a, b) => {
+      sorted.sort((a, b) => {
         if (sortOrder === "asc") {
           return a.current_price - b.current_price;
         } else {
           return b.current_price - a.current_price;
         }
       });
+    } else if (sortBy === "name") {
+      sorted.sort((a, b) => {
+        if (sortOrder === "asc") {
+          return a.name.localeCompare(b.name);
+        } else {
+          return b.name.localeCompare(a.name);
+        }
+      });
     }
-    return allAssets;
+    return sorted;
   }, [allAssets, sortBy, sortOrder]);
 
   const handleSort = (field: string) => {
