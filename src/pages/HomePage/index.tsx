@@ -15,7 +15,7 @@ import { Modal } from "../../components/ui/Modal/Modal";
 import { Button } from "../../components/ui/Button/Button";
 import { AssetDropdown } from "./AssetDropdown";
 
-const Home: React.FC = () => {
+const HomePage: React.FC = () => {
   const [limit] = useState(10);
   const [sortBy, setSortBy] = useState<string | null>(null);
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
@@ -157,4 +157,4 @@ const Home: React.FC = () => {
   );
 };
 
-export { Home };
+export { HomePage };
