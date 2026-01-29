@@ -26,7 +26,7 @@ const Home: React.FC = () => {
     useQueryAssets({
       limit,
       sortBy: sortBy === "current_price" ? null : sortBy,
-      sortOrder: sortBy === "current_price" ? "asc" : sortOrder,
+      sortOrder: sortBy === "current_price" ? undefined : sortOrder,
     });
 
   const allAssets = data?.pages.flat() || [];
