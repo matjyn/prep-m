@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useEffect } from "react";
+import React, { useState, useMemo, useEffect, useCallback } from "react";
 import { useQueryAssets } from "../../queries/useQueryAssets";
 import { Button } from "../../components/ui/Button/Button";
 import { Input } from "../../components/ui/Input/Input";
@@ -43,59 +43,52 @@ const TradePage: React.FC = () => {
     }
   }, [cryptoAmount, fiatAmount, selectedAsset, isCryptoToFiat]);
 
-  const firstInput = isCryptoToFiat ? (
-    <InputWithSelectModal
-      label="Crypto Amount"
-      value={cryptoAmount}
-      onValueChange={handleCryptoChange}
-      children={
-        <AssetsList
-          assets={assets}
-          onClick={setSelectedAssetId}
-        />
-      }
-      selectedItemName={selectedAsset?.name}
-      isLoading={isPending}
-      isInputDisabled={false}
-    />
-  ) : (
-    <Input
-      type="number"
-      placeholder="Fiat Amount (USD)"
-      min="0"
-      value={fiatAmount}
-      onChange={(e) => handleFiatChange(e.target.value)}
-      disabled={false}
-      className="animateIn"
-    />
+  const renderCryptoInput = useCallback(
+    (isDisabled: boolean, value: string, onValueChange?: (val: string) => void) => (
+      <InputWithSelectModal
+        label="Crypto Amount"
+        value={value}
+        onValueChange={onValueChange}
+        children={
+          <AssetsList
+            assets={assets}
+            onClick={setSelectedAssetId}
+          />
+        }
+        selectedItemName={selectedAsset?.name}
+        isLoading={isPending}
+        isInputDisabled={isDisabled}
+      />
+    ),
+    [assets, selectedAsset?.name, isPending],
   );
 
-  const secondInput = isCryptoToFiat ? (
-    <Input
-      type="number"
-      placeholder="Fiat Amount (USD)"
-      min="0"
-      value={(parseFloat(fiatAmount) || 0).toFixed(2)}
-      onChange={undefined}
-      disabled={true}
-      className="animateIn"
-    />
-  ) : (
-    <InputWithSelectModal
-      label="Crypto Amount"
-      value={(parseFloat(cryptoAmount) || 0).toFixed(2)}
-      onValueChange={undefined}
-      children={
-        <AssetsList
-          assets={assets}
-          onClick={setSelectedAssetId}
-        />
-      }
-      selectedItemName={selectedAsset?.name}
-      isLoading={isPending}
-      isInputDisabled={true}
-    />
+  const renderFiatInput = useCallback(
+    (
+      isDisabled: boolean,
+      value: string,
+      onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void,
+    ) => (
+      <Input
+        type="number"
+        placeholder="Fiat Amount (USD)"
+        min="0"
+        value={value}
+        onChange={onChange}
+        disabled={isDisabled}
+        className="animateIn"
+      />
+    ),
+    [],
   );
+
+  const firstInput = isCryptoToFiat
+    ? renderCryptoInput(false, cryptoAmount, handleCryptoChange)
+    : renderFiatInput(false, fiatAmount, (e) => handleFiatChange(e.target.value));
+
+  const secondInput = isCryptoToFiat
+    ? renderFiatInput(true, (parseFloat(fiatAmount) || 0).toFixed(2), undefined)
+    : renderCryptoInput(true, (parseFloat(cryptoAmount) || 0).toFixed(2), undefined);
 
   return (
     <div className="animateIn exchange-page-container">
