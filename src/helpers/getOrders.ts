@@ -3,8 +3,8 @@ export function getOrder(sortBy?: string | null, sortOrder?: "asc" | "desc"): st
 
   if (sortBy === "name") {
     return sortOrder === "asc" ? "id_asc" : "id_desc";
-  } else if (sortBy === "price") {
-    return sortOrder === "asc" ? "price_asc" : "price_desc";
+  } else if (sortBy === "current_price") {
+    return sortOrder === "asc" ? "current_price_asc" : "current_price_desc";
   }
 
   return "market_cap_desc";
