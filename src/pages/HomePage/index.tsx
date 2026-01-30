@@ -1,4 +1,4 @@
-import React, { useState, useRef, useMemo } from "react";
+import React, { useState, useRef, useMemo, useEffect } from "react";
 import {
   Table,
   TableHeader,
@@ -16,18 +16,33 @@ import { Button } from "../../components/ui/Button/Button";
 import { AssetDropdown } from "./AssetDropdown";
 
 const HomePage: React.FC = () => {
-  const [limit] = useState(10);
+  const limit = useRef<number>(10);
   const [sortBy, setSortBy] = useState<string | null>(null);
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
   const [openDropdownId, setOpenDropdownId] = useState<string | null>(null);
   const dropdownRefs = useRef<{ [key: string]: HTMLButtonElement | null }>({});
+  const desiredPageCount = useRef<number>(1);
 
   const { data, isError, isPending, isFetchingNextPage, fetchNextPage, hasNextPage } =
     useQueryAssets({
-      limit,
+      limit: limit.current,
+      sortBy,
+      sortOrder,
     });
 
   const allAssets = data?.pages.flat() || [];
+  const currentPageCount = data?.pages.length || 0;
+
+  useEffect(() => {
+    if (
+      !isPending &&
+      !isFetchingNextPage &&
+      currentPageCount < desiredPageCount.current &&
+      hasNextPage
+    ) {
+      fetchNextPage();
+    }
+  }, [currentPageCount, isPending, isFetchingNextPage, hasNextPage, fetchNextPage]);
 
   const sortedAssets = useMemo(() => {
     let sorted = [...allAssets];
@@ -37,14 +52,6 @@ const HomePage: React.FC = () => {
           return a.current_price - b.current_price;
         } else {
           return b.current_price - a.current_price;
-        }
-      });
-    } else if (sortBy === "name") {
-      sorted.sort((a, b) => {
-        if (sortOrder === "asc") {
-          return a.name.localeCompare(b.name);
-        } else {
-          return b.name.localeCompare(a.name);
         }
       });
     }
@@ -71,6 +78,13 @@ const HomePage: React.FC = () => {
 
   const closeDropdown = () => {
     setOpenDropdownId(null);
+  };
+
+  const handleShowMore = () => {
+    if (hasNextPage && !isFetchingNextPage) {
+      fetchNextPage();
+      desiredPageCount.current = currentPageCount + 1;
+    }
   };
 
   return (
@@ -150,7 +164,7 @@ const HomePage: React.FC = () => {
                   <TableCell
                     colSpan={4}
                     className="text-center cursor-pointer"
-                    onClick={() => fetchNextPage()}
+                    onClick={handleShowMore}
                   >
                     {isFetchingNextPage ? "Loading..." : "Show more"}
                   </TableCell>
