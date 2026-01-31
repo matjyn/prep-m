@@ -28,6 +28,7 @@ const UserInfo = () => {
       <div>
         {user ? (
           <div className="flex items-center gap-2">
+            <span className="flex align-center">{user.email}</span>
             <Button onClick={handleLogout}>Logout</Button>
           </div>
         ) : (

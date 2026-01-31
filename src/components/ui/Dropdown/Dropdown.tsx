@@ -3,7 +3,7 @@ import { createPortal } from "react-dom";
 import "./dropdown.styles.css";
 
 interface DropdownProps {
-  anchorRef: React.RefObject<HTMLElement>;
+  anchorRef: React.RefObject<HTMLElement | null>;
   children: ReactNode;
   isOpen: boolean;
   onClose: () => void;

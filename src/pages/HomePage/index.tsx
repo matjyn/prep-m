@@ -1,4 +1,4 @@
-import React, { useState, useRef, useMemo } from "react";
+import React, { useState, useMemo } from "react";
 import {
   Table,
   TableHeader,
@@ -10,17 +10,13 @@ import {
 } from "../../components/ui/Table/Table";
 import { useQueryAssets } from "../../queries/useQueryAssets";
 import type { Asset } from "../../types/api/assets";
-import { formatPrice } from "../../utils/format";
 import { Modal } from "../../components/ui/Modal/Modal";
-import { Button } from "../../components/ui/Button/Button";
-import { AssetDropdown } from "./AssetDropdown";
+import { AssetRow } from "./AssetRow";
 
 const HomePage: React.FC = () => {
   const [limit] = useState(10);
   const [sortBy, setSortBy] = useState<string | null>(null);
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
-  const [openDropdownId, setOpenDropdownId] = useState<string | null>(null);
-  const dropdownRefs = useRef<{ [key: string]: HTMLButtonElement | null }>({});
 
   const { data, isError, isPending, isFetchingNextPage, fetchNextPage, hasNextPage } =
     useQueryAssets({
@@ -30,47 +26,31 @@ const HomePage: React.FC = () => {
   const allAssets = data?.pages.flat() || [];
 
   const sortedAssets = useMemo(() => {
-    let sorted = [...allAssets];
+    const sorted = [...allAssets];
+
     if (sortBy === "current_price") {
-      sorted.sort((a, b) => {
-        if (sortOrder === "asc") {
-          return a.current_price - b.current_price;
-        } else {
-          return b.current_price - a.current_price;
-        }
-      });
+      const dir = sortOrder === "asc" ? 1 : -1;
+      sorted.sort((a, b) => (a.current_price - b.current_price) * dir);
     } else if (sortBy === "name") {
-      sorted.sort((a, b) => {
-        if (sortOrder === "asc") {
-          return a.name.localeCompare(b.name);
-        } else {
-          return b.name.localeCompare(a.name);
-        }
-      });
+      const dir = sortOrder === "asc" ? 1 : -1;
+      sorted.sort((a, b) => a.name.localeCompare(b.name) * dir);
     }
+
     return sorted;
   }, [allAssets, sortBy, sortOrder]);
 
   const handleSort = (field: string) => {
-    if (sortBy === field) {
-      if (sortOrder === "asc") {
-        setSortOrder("desc");
-      } else {
-        setSortBy(null);
-        setSortOrder("asc");
-      }
-    } else {
+    if (sortBy !== field) {
       setSortBy(field);
       setSortOrder("asc");
+      return;
     }
-  };
 
-  const handleDropdownToggle = (assetId: string) => {
-    setOpenDropdownId(openDropdownId === assetId ? null : assetId);
-  };
+    const nextOrder = sortOrder === "asc" ? "desc" : "asc";
+    const shouldClear = sortOrder === "desc";
 
-  const closeDropdown = () => {
-    setOpenDropdownId(null);
+    setSortBy(shouldClear ? null : field);
+    setSortOrder(shouldClear ? "asc" : nextOrder);
   };
 
   return (
@@ -112,39 +92,15 @@ const HomePage: React.FC = () => {
                 <TableHeaderCell></TableHeaderCell>
               </TableRow>
             </TableHeader>
+
             <TableBody>
               {sortedAssets?.map((asset: Asset) => (
-                <TableRow key={asset.id}>
-                  <TableCell>{asset.name}</TableCell>
-                  <TableCell>{formatPrice(asset.current_price)}</TableCell>
-                  <TableCell>
-                    {asset.image ? (
-                      <img
-                        src={asset.image}
-                        alt={asset.name}
-                        className="w-4 h-4"
-                      />
-                    ) : (
-                      <span>No icon</span>
-                    )}
-                  </TableCell>
-                  <TableCell className="text-right">
-                    <Button
-                      ref={(el) => {
-                        if (el) dropdownRefs.current[asset.id] = el;
-                      }}
-                      onClick={() => handleDropdownToggle(asset.id)}
-                    >
-                      ⋮
-                    </Button>
-                    <AssetDropdown
-                      isOpen={openDropdownId === asset.id}
-                      onClose={closeDropdown}
-                      anchorRef={{ current: dropdownRefs.current[asset.id] as HTMLElement }}
-                    />
-                  </TableCell>
-                </TableRow>
+                <AssetRow
+                  key={asset.id}
+                  asset={asset}
+                />
               ))}
+
               {hasNextPage && (
                 <TableRow>
                   <TableCell

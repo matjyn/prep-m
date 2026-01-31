@@ -1,34 +1,47 @@
-import React from "react";
+import React, { useState, useRef } from "react";
 import { Dropdown } from "../../components/ui/Dropdown/Dropdown";
+import { Button } from "../../components/ui/Button/Button";
 
-interface AssetDropdownProps {
-  isOpen: boolean;
-  onClose: () => void;
-  anchorRef: React.RefObject<HTMLElement>;
-}
+const AssetDropdown: React.FC = () => {
+  const [isOpen, setIsOpen] = useState(false);
+  const anchorRef = useRef<HTMLButtonElement>(null);
 
-const AssetDropdown: React.FC<AssetDropdownProps> = ({ isOpen, onClose, anchorRef }) => {
-  if (!anchorRef.current) return null;
+  const handleToggle = () => {
+    setIsOpen((prev) => !prev);
+  };
+
+  const handleClose = () => {
+    setIsOpen(false);
+  };
 
   return (
-    <Dropdown
-      anchorRef={anchorRef}
-      isOpen={isOpen}
-      onClose={onClose}
-    >
-      <div
-        className="w-full px-4 py-2 cursor-pointer"
-        onClick={onClose}
+    <>
+      <Button
+        ref={anchorRef}
+        onClick={handleToggle}
       >
-        Buy
-      </div>
-      <div
-        className="w-full px-4 py-2 cursor-pointer"
-        onClick={onClose}
+        ⋮
+      </Button>
+
+      <Dropdown
+        anchorRef={anchorRef}
+        isOpen={isOpen}
+        onClose={handleClose}
       >
-        Sell
-      </div>
-    </Dropdown>
+        <div
+          className="w-full px-4 py-2 cursor-pointer"
+          onClick={handleClose}
+        >
+          Buy
+        </div>
+        <div
+          className="w-full px-4 py-2 cursor-pointer"
+          onClick={handleClose}
+        >
+          Sell
+        </div>
+      </Dropdown>
+    </>
   );
 };
 
