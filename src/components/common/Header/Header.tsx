@@ -7,7 +7,7 @@ const Header = () => {
   const location = useLocation();
 
   return (
-    <header className="header flex justify-between align-center p-3 border radius-md">
+    <header className="header flex justify-between align-center p-3 border radius-lg">
       <div className="flex gap-3">
         <Link
           to={publicRoutes.home}
