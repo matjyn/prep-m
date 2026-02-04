@@ -1,0 +1,68 @@
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap");
+
+$font-family-base: "Open Sans", system-ui, Avenir, Helvetica, Arial, sans-serif;
+$font-size-base: 16px;
+$font-weight-base: 600;
+
+$font-sizes: (
+  "xs": 0.75rem,
+  "sm": 0.875rem,
+  "base": 1rem,
+  "lg": 1.125rem,
+  "xl": 1.25rem,
+  "2xl": 1.5rem,
+  "3xl": 1.875rem,
+  "4xl": 2.25rem,
+  "5xl": 3rem,
+);
+
+$colors: (
+  "bg": #0d1117,
+  "bg-secondary": #06101f,
+  "bg-input": #161b22,
+  "bg-input-disabled": #23272e,
+  "text": #c9d1d9,
+  "text-inverse": #ffffff,
+  "text-muted": #8b949e,
+  "primary": #58a6ff,
+  "primary-hover": #388bfd,
+  "secondary": #f78166,
+  "success": #56d364,
+  "error": #f85149,
+  "warning": #d29922,
+  "border": #30363d,
+  "border-light": #454c54,
+);
+
+@function color($name) {
+  @return map-get($colors, $name);
+}
+
+$spacing: (
+  0: 0,
+  1: 0.25rem,
+  2: 0.5rem,
+  3: 1rem,
+  4: 1.5rem,
+  5: 2rem,
+);
+
+@function spacing($size) {
+  @return map-get($spacing, $size);
+}
+
+$radius: (
+  "sm": 6px,
+  "md": 12px,
+  "lg": 20px,
+);
+
+@function radius($size) {
+  @return map-get($radius, $size);
+}
+
+$animation-duration: 200ms;
+$animation-easing: ease-out;
+
+$max-width: 1200px;
+$scrollbar-width: 12px;

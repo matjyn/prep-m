@@ -55,12 +55,12 @@ const TradePage: React.FC = () => {
             onClick={setSelectedAssetId}
           />
         }
-        selectedItemName={selectedAsset?.name}
+        selectedItem={selectedAsset}
         isLoading={isPending}
         isInputDisabled={options.isDisabled}
       />
     ),
-    [assets, selectedAsset?.name, isPending],
+    [assets, selectedAsset, isPending],
   );
 
   const renderFiatInput = useCallback(

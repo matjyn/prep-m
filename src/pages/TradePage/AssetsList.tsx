@@ -19,7 +19,7 @@ const AssetsList = ({ assets, onClick }: { assets: Asset[]; onClick: (id: string
           <div>
             <div className="item-name font-bold">{item.name}</div>
             <div className="item-price text-sm text-muted">
-              {item.current_price ? "$" + item.current_price.toFixed(2) : "Price not available"}
+              {item.current_price ? "$" + item.current_price : "Price not available"}
             </div>
           </div>
         </li>

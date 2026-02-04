@@ -1,0 +1,70 @@
+@use "../variables" as *;
+
+@each $size, $value in $spacing {
+  .m-#{$size} {
+    margin: $value;
+  }
+}
+
+$sides: (
+  "t": "top",
+  "r": "right",
+  "b": "bottom",
+  "l": "left",
+);
+
+@each $abbr, $side in $sides {
+  @each $size, $value in $spacing {
+    .m#{$abbr}-#{$size} {
+      margin-#{$side}: $value;
+    }
+  }
+}
+
+@each $size, $value in $spacing {
+  .mx-#{$size} {
+    margin-left: $value;
+    margin-right: $value;
+  }
+}
+
+@each $size, $value in $spacing {
+  .my-#{$size} {
+    margin-top: $value;
+    margin-bottom: $value;
+  }
+}
+
+@each $size, $value in $spacing {
+  .p-#{$size} {
+    padding: $value;
+  }
+}
+
+@each $abbr, $side in $sides {
+  @each $size, $value in $spacing {
+    .p#{$abbr}-#{$size} {
+      padding-#{$side}: $value;
+    }
+  }
+}
+
+@each $size, $value in $spacing {
+  .px-#{$size} {
+    padding-left: $value;
+    padding-right: $value;
+  }
+}
+
+@each $size, $value in $spacing {
+  .py-#{$size} {
+    padding-top: $value;
+    padding-bottom: $value;
+  }
+}
+
+@each $size, $value in $spacing {
+  .gap-#{$size} {
+    gap: $value;
+  }
+}

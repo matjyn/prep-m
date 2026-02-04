@@ -3,12 +3,13 @@ import { Input } from "../../ui/Input/Input";
 import { Button } from "../../ui/Button/Button";
 import { Dropdown } from "../../ui/Dropdown/Dropdown";
 import "./InputWithSelectModal.styles.css";
+import type { Asset } from "../../../types/api/assets";
 
 interface InputWithSelectModalProps {
   label: string;
   value: string;
   onValueChange?: (val: string) => void;
-  selectedItemName?: string;
+  selectedItem?: Asset;
   isLoading: boolean;
   readOnly?: boolean;
   isInputDisabled?: boolean;
@@ -19,7 +20,7 @@ const InputWithSelectModal = ({
   label,
   value,
   onValueChange,
-  selectedItemName,
+  selectedItem,
   isLoading,
   readOnly = false,
   isInputDisabled = false,
@@ -30,7 +31,7 @@ const InputWithSelectModal = ({
 
   useEffect(() => {
     setDropdownOpen(false);
-  }, [selectedItemName]);
+  }, [selectedItem]);
 
   return (
     <div className="input-with-select-modal animateIn">
@@ -49,8 +50,16 @@ const InputWithSelectModal = ({
           type="button"
           onClick={() => setDropdownOpen(!dropdownOpen)}
           disabled={isLoading || readOnly}
+          className="flex align-center gap-1"
         >
-          {selectedItemName || "Select"}
+          {selectedItem?.image && (
+            <img
+              src={selectedItem.image}
+              alt={selectedItem.name}
+              className="w-4 h-4 mr-1"
+            />
+          )}
+          {selectedItem?.name || "Select"}
         </Button>
       </div>
 

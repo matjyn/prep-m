@@ -1,7 +1,6 @@
 import React from "react";
 import { TableRow, TableCell } from "../../components/ui/Table/Table";
 import type { Asset } from "../../types/api/assets";
-import { formatPrice } from "../../utils/format";
 import { AssetDropdown } from "./AssetDropdown";
 
 interface AssetRowProps {
@@ -12,7 +11,7 @@ const AssetRow: React.FC<AssetRowProps> = ({ asset }) => {
   return (
     <TableRow>
       <TableCell>{asset.name}</TableCell>
-      <TableCell>{formatPrice(asset.current_price)}</TableCell>
+      <TableCell>US$ {asset.current_price}</TableCell>
       <TableCell>
         {asset.image ? (
           <img

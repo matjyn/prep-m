@@ -1,0 +1,29 @@
+@use "../variables" as *;
+
+@each $size, $value in $spacing {
+  .w-#{$size} {
+    width: $value;
+  }
+}
+
+.w-auto {
+  width: auto;
+}
+
+.w-full {
+  width: 100%;
+}
+
+@each $size, $value in $spacing {
+  .h-#{$size} {
+    height: $value;
+  }
+}
+
+.h-auto {
+  height: auto;
+}
+
+.h-full {
+  height: 100%;
+}

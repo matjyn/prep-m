@@ -1,0 +1,41 @@
+@use "../variables" as *;
+
+@each $name, $size in $font-sizes {
+  .text-#{$name} {
+    font-size: $size;
+  }
+}
+
+$text-colors: (
+  "primary": color("primary"),
+  "primary-hover": color("primary-hover"),
+  "secondary": color("secondary"),
+  "success": color("success"),
+  "error": color("error"),
+  "warning": color("warning"),
+  "muted": color("text-muted"),
+  "inverse": color("text-inverse"),
+  "default": color("text"),
+);
+
+@each $name, $color in $text-colors {
+  .text-#{$name} {
+    color: $color;
+  }
+}
+
+.text-left {
+  text-align: left;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.text-right {
+  text-align: right;
+}
+
+.text-justify {
+  text-align: justify;
+}

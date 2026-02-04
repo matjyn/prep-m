@@ -1,0 +1,34 @@
+@use "variables" as *;
+@use "mixins" as *;
+
+:root {
+  --font-family-base: #{$font-family-base};
+  --font-size-base: #{$font-size-base};
+  --font-weight-base: #{$font-weight-base};
+
+  @each $name, $value in $colors {
+    --color-#{$name}: #{$value};
+  }
+
+  @each $name, $value in $radius {
+    --radius-#{$name}: #{$value};
+  }
+}
+
+body {
+  margin: 0 auto;
+  padding: 0;
+  background-color: color("bg");
+  color: color("text");
+  font-family: $font-family-base;
+  font-size: $font-size-base;
+  font-weight: $font-weight-base;
+  max-width: $max-width;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+@include custom-scrollbar;
